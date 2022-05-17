@@ -15,13 +15,33 @@
         <header>
             <h1>Taxi App</h1>
             <nav>
-                <ul>
-                    <li><button>Add A Taxi</button></a></li>
-                    <li><button>Add A Route</button></a></li>
-                </ul>
+                <div x-data="{ show: false }">
+                    <li><button @click="show=!show">Add A Route</button></a></li>
+                    <div x-show="show">
+                        <input type="text" placeholder="Destination" x-model="destination">
+                        <input type="number" placeholder="Available Taxis" x-model="availableTaxis">
+                        <input type="number" placeholder="Taxi Fare" x-model="taxiFare">
+                        <button @click="setInfo(); show=false">Add</button>
+                    </div>
+                </div>
+                <div x-data="{ show: false }">
+                    <li><button @click="show=!show">Add A Taxi</button></a></li>
+                    <div x-show="show">
+                        <input type="text" placeholder="Registration" x-model="registration">
+                        <input type="number" placeholder="limit" x-model="limit">
+                        <label for="destinations">Choose a destination</label>
+                        <div x-data="routes: getInfo()">
+                            <select>
+                                <template x-for="route in routes">
+                                    <option x-text="route.destination"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <button @click="setInfo(); show=false">Add</button>
+                    </div>
+                </div>
             </nav>
         </header>
-        <main>
             <table>
                 <tr>
                   <th>Taxi Rank</th>
@@ -32,92 +52,26 @@
                   <th>Total Fare</th>
                   <th>Available Taxis</th>
                 </tr>
-                <tr>
-                    <td>Johannesburg</td>
-                    <td>Auckland Park</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                    <td><button>Not Full</button></td>
-                    <td>R14</td>
-                    <td>R100</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Johannesburg</td>
-                    <td>Sandton</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                    <td><button>Not Full</button></td>
-                    <td>R14</td>
-                    <td>R100</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Johannesburg</td>
-                    <td>Rosebank</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                    <td><button>Not Full</button></td>
-                    <td>R14</td>
-                    <td>R100</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Johannesburg</td>
-                    <td>Lonehill</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                    <td><button>Not Full</button></td>
-                    <td>R14</td>
-                    <td>R100</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Johannesburg</td>
-                    <td>Soweto</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                    <td><button>Not Full</button></td>
-                    <td>R14</td>
-                    <td>R100</td>
-                    <td>
-                        <button>-</button>
-                        <p>2</p>
-                        <button>+</button>
-                    </td>
-                </tr>
-              </table>
+            </table>
+            <table x-data="routes: getInfo()">
+                <template x-for="route in routes">
+                    <tr>
+                        <td x-text="route.rank"></td>
+                        <td x-text="route.destination"></td>
+                        <td class="buttons">
+                            <button @click="decrementCount(route.id)">-</button>
+                            <p x-text="route.count"></p>
+                            <button @click="incrementCount(route.id)">+</button>
+                        </td>
+                        <td>
+                            <button x-text="route.taxiStatus" @click="taxiDeparture(route.id)" x-bind:disabled="disableButton()"></button>
+                        </td>
+                        <td x-text="route.taxiFare"></td>
+                        <td x-text="getTotalFare(route.id)"></td>
+                        <td x-text="route.availableTaxis"></td>
+                    </tr>
+                </template>
+            </table>
         </main>
     </div>
 </body>
