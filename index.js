@@ -19,7 +19,9 @@ document.addEventListener('alpine:init', () => {
 
         getTotalFare(id){
             const tobeIncreased = this.getInfo().find(item => item.id == id)
-            tobeIncreased.totalFare += tobeIncreased.count * tobeIncreased.taxiFare
+            if(tobeIncreased.count < tobeIncreased.limit){
+                tobeIncreased.totalFare += tobeIncreased.count * tobeIncreased.taxiFare
+            }
             return tobeIncreased.totalFare
         },
 
@@ -62,6 +64,12 @@ document.addEventListener('alpine:init', () => {
             if(tobeDecremented.count < tobeDecremented.limit){
                 tobeDecremented.taxiStatus = 'Not Full'
             }
+        },
+
+        incrementTaxis(dest){
+            const tobeIncremented = this.getInfo().find(item => item.destination == dest)
+            console.log(tobeIncremented)
+
         },
 
         

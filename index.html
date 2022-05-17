@@ -30,14 +30,14 @@
                         <input type="text" placeholder="Registration" x-model="registration">
                         <input type="number" placeholder="limit" x-model="limit">
                         <label for="destinations">Choose a destination</label>
-                        <div x-data="routes: getInfo()">
-                            <select>
+                        <div x-data="{routes: getInfo(), dest: ''}">
+                            <select x-model="dest">
                                 <template x-for="route in routes">
                                     <option x-text="route.destination"></option>
                                 </template>
                             </select>
+                            <button @click="incrementTaxis(route.destination); show=false">Add</button>
                         </div>
-                        <button @click="setInfo(); show=false">Add</button>
                     </div>
                 </div>
             </nav>
